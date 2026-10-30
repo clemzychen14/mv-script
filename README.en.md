@@ -1,8 +1,8 @@
 # MV Script
 
-An Agent Skill for developing original music video concepts, complete scene scripts, and optional director storyboards from songs, lyrics, reference videos, and character images.
+An Agent Skill for developing original music video concepts, complete scene scripts, shot tables, and generated storyboard images from songs, lyrics, reference videos, and character images.
 
-[中文说明](README.md) · [Skill](mv-script/SKILL.md) · [Validation](docs/validation.md)
+[中文说明](README.md) · [Skill](mv-script/SKILL.md) · [Validation](docs/validation.md) · [MIT](LICENSE)
 
 ## What it does
 
@@ -10,7 +10,7 @@ Start with any available input. The default workflow examines accessible sources
 
 When a reference video is provided, its section structure, editing pace, action beats, pauses, and climax organization guide the new work. These relationships are mapped to the target song, with timing changes explained. Original stories can share the reference structure while differing in character choices or conceptual mechanisms.
 
-Deliverables are editable text. The skill does not generate images, music, or videos, submit generation jobs, upload source media, or require a cloud API key.
+Deliverables include editable text and optional generated storyboard images. Image generation uses the host's available built-in tool without a separately configured API key; it is not guaranteed to run offline. The skill does not generate music or final videos, or submit video generation jobs.
 
 ## Install
 
@@ -42,6 +42,20 @@ Continue with a selected direction, request a complete scene script, or ask for 
 
 The workflow adapts to the input. Lyrics alone support concepts and an ordered script; readable images support visible character or scene descriptions. Missing audio evidence is marked as unknown rather than replaced with invented BPM, song sections, or lyric timestamps. Shot counts and durations are not fixed to a grid or a 15 second segment rule.
 
+## Storyboard images
+
+After a shot table is confirmed, ask for storyboard images. You can also explicitly authorize a current draft directly. Generate individual shots or multi-panel pages, preserving character appearance, wardrobe, props, spatial direction, and the shot IDs. Panel count follows the content and does not require a nine-panel grid.
+
+```text
+Generate storyboard images from this shot table. Keep the character and scene details consistent, group shots by scene, and provide the actual images with a shot index.
+```
+
+The workflow calls an available image tool, inspects the results, and saves real image files under the project's `storyboard_images/` directory. It does not stop at prompts or placeholder cards. A full set is completed when requested, while preview requests stay limited to the requested scope. If no image tool is available, that limitation is reported. See the [image workflow](mv-script/references/storyboard-images.md). Only necessary text and image references are supplied to the image tool; full audio or video files are not additionally uploaded.
+
+The following three-panel test page was actually generated and visually inspected from the original example, covering S01.01, S02.01, and S05.01. It is not aligned to a real song. See the [image index](examples/storyboard-images/index.md) for inspection limits and the saved prompt.
+
+![Generated three-panel storyboard example](examples/storyboard-images/page-01.png)
+
 ## Optional local tools
 
 The writing workflow needs no media utilities. The optional helper uses Python 3.9 or newer, with FFprobe and FFmpeg when already available. PCM WAV duration can fall back to Python's standard library.
@@ -68,9 +82,3 @@ python3 validation/test_inspect_media.py
 Twelve local media checks have passed using synthetic audio and video. Configuration, relative references, backup installation, and source preservation have also been checked. Real song and reference MV interpretation, precise lyric alignment, and live Claude Code invocation remain untested. GitHub Actions runs the repository checks; its actual results are recorded in the Actions tab.
 
 The installable skill is the inner `mv-script/` directory. Examples, documentation, and development checks remain outside it. Generated media and local reports containing workstation paths are excluded from version control.
-
-## Attribution and license
-
-Workflow ideas were informed by [Micro-Drama-Skills](https://github.com/zhaihao118/Micro-Drama-Skills). Instructions, templates, and helper code were written independently. See [attribution](mv-script/ATTRIBUTION.md) for inspected upstream versions and scope.
-
-Released under the [MIT License](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md) for contributions.

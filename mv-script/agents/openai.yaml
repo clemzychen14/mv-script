@@ -1,4 +1,4 @@
 interface:
   display_name: "MV Script"
-  short_description: "多模态参考分析、原创 MV 创意开发、完整剧本与按需导演分镜"
+  short_description: "多模态参考分析、原创 MV 创意、完整剧本、文字分镜与分镜图生成"
   default_prompt: "使用 $mv-script 分析我提供的歌曲、歌词、参考视频和角色图，先提出不同的 MV 创意方向。"
