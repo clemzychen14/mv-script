@@ -1,4 +1,4 @@
-# MV Script
+# Music Video Script Writing - 音乐MV剧本分镜生成
 
 根据歌曲、歌词、参考视频与角色图片，逐步开发原创 MV 概念、完整剧本、文字分镜与分镜图的 Agent Skill。
 
