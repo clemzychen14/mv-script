@@ -1,0 +1,15 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+*.zip
+/mv_project/
+/validation/*
+!/validation/test_inspect_media.py
+!/validation/check_package.py
+!/validation/fixtures/
+/validation/fixtures/*
+!/validation/fixtures/original_test_lyrics.txt
