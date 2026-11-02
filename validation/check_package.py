@@ -18,7 +18,7 @@ def main():
     ui = yaml.safe_load((SKILL / 'agents/openai.yaml').read_text(encoding='utf-8'))
     assert '$mv-script' in ui['interface']['default_prompt']
     assert 25 <= len(ui['interface']['short_description']) <= 64
-    documents = list(SKILL.rglob('*.md')) + [ROOT / name for name in
+    documents = list(SKILL.rglob('*.md')) + list((ROOT / 'examples').rglob('*.md')) + [ROOT / name for name in
         ['README.md', 'README.en.md', 'INSTALL.md', 'docs/validation.md']]
     checked = 0
     for document in documents:

@@ -1,6 +1,6 @@
 # MV Script
 
-An Agent Skill for developing original music video concepts, complete scene scripts, shot tables, and generated storyboard images from songs, lyrics, reference videos, and character images.
+An Agent Skill for developing original music video concepts, complete scene scripts, character sheets, scene backgrounds, shot tables, and storyboard images from songs, lyrics, reference videos, and character images.
 
 [中文说明](README.md) · [Skill](mv-script/SKILL.md) · [Validation](docs/validation.md) · [MIT](LICENSE)
 
@@ -10,7 +10,7 @@ Start with any available input. The default workflow examines accessible sources
 
 When a reference video is provided, its section structure, editing pace, action beats, pauses, and climax organization guide the new work. These relationships are mapped to the target song, with timing changes explained. Original stories can share the reference structure while differing in character choices or conceptual mechanisms.
 
-Deliverables include editable text and optional generated storyboard images. Image generation uses the host's available built-in tool without a separately configured API key; it is not guaranteed to run offline. The skill does not generate music or final videos, or submit video generation jobs.
+Deliverables include editable text and optional generated character sheets, scene backgrounds, and storyboard images. Image generation uses the host's available built-in tool without a separately configured API key; it is not guaranteed to run offline. The skill does not generate music or final videos, or submit video generation jobs.
 
 ## Install
 
@@ -41,6 +41,22 @@ Use $mv-script to follow this reference video's structure and rhythm, combine it
 Continue with a selected direction, request a complete scene script, or ask for a storyboard. Revision requests can be limited to a specific scene, character, or chorus while preserving confirmed material elsewhere.
 
 The workflow adapts to the input. Lyrics alone support concepts and an ordered script; readable images support visible character or scene descriptions. Missing audio evidence is marked as unknown rather than replaced with invented BPM, song sections, or lyric timestamps. Shot counts and durations are not fixed to a grid or a 15 second segment rule.
+
+## Character sheets and scene backgrounds
+
+A polished character sheet is not required at the start. A clear photograph, illustration, partial view, or several detail references can be used, and materials can arrive gradually. Request only the assets needed for the current task. Existing usable images can be referenced directly.
+
+```text
+Create a front, side, and back character sheet from this reference. Preserve the visible face design, hair, outfit, colors, and accessories. Identify unseen details as creative additions.
+
+Create an unoccupied background from this scene reference, preserving its visible layout, materials, and lighting. Identify reconstructed occluded areas.
+
+Use the selected character sheet and background as image references for the storyboard.
+```
+
+Character sheets preserve visible anchors while treating unseen views as proposed design, not recovered facts. Background requests can retain the original setting, develop a new one from its style, or create requested camera and lighting variants. Generated files, reference roles, selected versions, and creative additions are recorded under `assets/characters/`, `assets/scenes/`, and `assets/index.md`. Later storyboard calls pass the actual selected images to the image tool.
+
+The workflow does not require every missing asset to be generated before concepts or scripts can proceed. See the [visual asset workflow](mv-script/references/visual-assets.md). The [tested examples](examples/visual-assets/index.md) include a three-view sheet generated from one synthetic front image and an unoccupied background generated from the original storyboard. They record visible anchors, creative completions, and inspection limits.
 
 ## Storyboard images
 
