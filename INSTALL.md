@@ -52,4 +52,4 @@ Python 非创作必需。需要自动读取媒体参数或抽帧时使用 Python
 
 交付目录内运行 `python3 validation/test_inspect_media.py` 执行本地检查。测试会创建明确标注的合成样本；可读测试图片的创建使用已安装 Pillow，缺少时跳过，不安装任何依赖。媒体工具缺少时对应媒体检查跳过，其余降级检查仍可运行。
 
-技能本身的 YAML、相对引用、能力与分阶段行为记录见 [验证范围](docs/validation.md)。试写结果见 [完整剧本](examples/screenplay.md) 与 [分镜示例](examples/storyboard.md)。
+技能校验和合成素材测试见 [验证范围](docs/validation.md)。剧本、分镜、试剪与逐镜生成输入的项目示例见 [《催眠》短版案例](mv-script/references/cuimian-case.md)。

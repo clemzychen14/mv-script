@@ -10,8 +10,8 @@
 
 ```sh
 python3 "SKILL_DIR/scripts/inspect_media.py" --check-tools
-python3 "SKILL_DIR/scripts/inspect_media.py" "song.wav" "reference.mp4" --output "mv_project/media_inspection"
-python3 "SKILL_DIR/scripts/inspect_media.py" "reference.mp4" --output "mv_project/detail_v02" --frames 10
+python3 "SKILL_DIR/scripts/inspect_media.py" "song.wav" "reference.mp4" --output "mv_project/demo/media_inspection"
+python3 "SKILL_DIR/scripts/inspect_media.py" "reference.mp4" --output "mv_project/demo/detail_v02" --frames 10
 ```
 
 `--check-tools` 只向标准输出报告能力。检查素材时必须指定 `--output`，目录须不存在或为空，拒绝覆盖旧报告。只传文件，不传目录或 URL；不递归扫描，不复制原素材。

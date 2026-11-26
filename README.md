@@ -1,6 +1,6 @@
 # Music Video Script Writing - 音乐MV剧本分镜生成
 
-根据歌曲、歌词、参考视频与角色图片，逐步开发原创 MV 概念、完整剧本、角色设定图、背景图与分镜图的 Agent Skill。
+根据歌曲、歌词、参考视频与图片开发原创 MV 的 Agent Skill，覆盖剧本、视觉资产、分镜、静止帧试剪和生成工作包。
 
 [English](README.en.md) · [安装说明](INSTALL.md) · [技能入口](mv-script/SKILL.md) · [验证范围](docs/validation.md) · [MIT](LICENSE)
 
@@ -10,7 +10,7 @@ MV Script 面向音乐视频的前期创作。你可以从一首歌、几句歌�
 
 有参考视频时，优先参照它的段落结构、剪辑快慢、人物动作节拍、重要停顿和高潮安排，再与目标歌曲对应。不同歌曲或时长会重新安排时间，并说明保留和调整之处。多个创意方向可以共享参考骨架，通过人物选择、概念机制和视觉事件形成差异。
 
-产出包括可编辑文本，以及按需生成的 character sheet、场景背景与静态分镜图。出图优先使用宿主内置图像工具，无需单独配置 API Key；图像能力由宿主提供，不承诺全离线生成。本技能不生成音乐或最终视频，不提交视频生成任务。
+产出包括可编辑文本、人物与场景等视觉资产、分镜图，以及使用原曲与分镜静帧制作的本地试剪预览。出图优先使用宿主内置图像工具。完整流程以交付逐片段提示词和生成工作包为终点。
 
 ## 输入与产出
 
@@ -78,15 +78,21 @@ python3 install_skill.py --host claude
 
 | 阶段 | 主要工作 | 何时停止 |
 | --- | --- | --- |
+| 项目目录 | 为每部 MV 确定独立目录；按请求整理已有文件与索引 | 仅要求整理时，核对搬迁和引用后交付 |
 | 素材与能力检查 | 确认可访问内容、分析能力和证据限制 | 仅要求分析时，在所需分析完成后停止 |
-| 角色与场景资产 | 从参考图片生成角色设定图、背景图并检查 | 按需执行，不要求事先备好完整设定图 |
 | 参考分析与创意 | 音乐叙事地图、参考结构映射、设定与不同概念 | 默认停在创意提案，等待选择 |
 | 完整剧本 | 人物行动、场次发展、视觉主题、高潮与结尾 | 按选择或直接创作要求展开 |
-| 导演分镜 | 动作、景别、运镜、光色、转场、作用及制作备注 | 仅在要求分镜时生成 |
-| 分镜图 | 根据文字分镜实际出图，检查角色、场景与镜头对应 | 仅在要求图片时生成，支持单镜图与多格故事板 |
+| 确定视觉资产 | 盘点人物三视图、面部特写、关键道具与场景图，采用现有参考或补图 | 根据剧本确认采用版本后进入分镜 |
+| 导演分镜 | 动作、景别、运镜、光色、转场、作用及制作备注 | 仅要求文字分镜时交付到这里 |
+| 分镜图 | 根据文字分镜实际出图，检查人物、道具、场景与镜号对应 | 支持单镜图与多格故事板，完整流程继续试剪 |
+| 静止帧试剪 | 将分镜静帧按时长配合原曲排成可播放预览 | 核对节奏和切点，将采用的镜序和时间回写分镜 |
+| 逐片段提示词 | 按选定模型和试剪时间表编写提示词、配置参考输入 | 仅要求提示词时交付到这里 |
+| 生成工作包 | 将提示词、参数、参考文件和采用的剪辑时间表打包 | 交给下一环节生成视频 |
 | 检查与修订 | 连续性、意象回收、音乐关系和指定范围修改 | 不自动重写已确认部分 |
 
 镜头数量与长度依据音乐、参考节奏和叙事决定，不固定每 15 秒九个分镜。只生成当前阶段需要的内容，不预建大量空文档。
+
+新项目默认保存到 `mv_project/<项目名>/`。已有项目可按作品整理到同一父目录下，搬迁后检查文件和路径，并用索引串起各自的剧本、分镜、试剪与工作包。 [项目目录整理规范](mv-script/references/project-organization.md)
 
 ## 从参考图片补充角色与背景
 
@@ -102,9 +108,9 @@ python3 install_skill.py --host claude
 
 角色图保留可见的外貌与服装锚点；背面、未显示鞋履和遮挡处属于新增设计，不声称从参考恢复出了真实细节。背景可生成保留原场景的空背景、基于参考的新场景，或按需补充机位与光照版本。已合用的图片可以直接使用，不会为进入创意阶段强制补齐整套资产。
 
-图片按角色或场景 ID 保存到 `assets/characters/`、`assets/scenes/`，并记录采用版本与补全说明。后续分镜实际引用这些图像，局部修改只同步受影响资产与镜头。详见 [角色与背景图规范](mv-script/references/visual-assets.md)。
+图片按 ID 保存到 `assets/characters/`、`assets/props/` 和 `assets/scenes/`，并记录采用版本与补全说明。后续分镜实际引用这些图像，局部修改只同步受影响资产与镜头。详见 [视觉资产规范](mv-script/references/visual-assets.md)。
 
-已经实际使用单张合成角色图生成三视图，并从原创分镜生成无人背景。结果、原图与补全说明见 [角色与背景图示例](examples/visual-assets/index.md)。
+《催眠》里，女主三视图用于身形和服装，单独用用户原图定面部，红厅和绿隧道参考提供空间与光色。 [《催眠》案例](mv-script/references/cuimian-case.md)
 
 ## 分镜图生成
 
@@ -118,9 +124,9 @@ python3 install_skill.py --host claude
 
 使用可用的宿主图像工具实际生成并查看结果，按镜头号保存到项目的 `storyboard_images/`，附上图片预览和镜头索引。用户要全套时连续完成；只要预览时生成对应范围。没有图像工具时明确说明限制并保留图像描述，不把提示词当成已生成图片。详见 [分镜图生成规范](mv-script/references/storyboard-images.md)。
 
-下面是根据原创示例实际生成并查看的三格测试页，对应 S01.01、S02.01 与 S05.01。它未与真实歌曲对齐，检查结果及图像描述见 [图片索引](examples/storyboard-images/index.md)。
+## 静止帧试剪
 
-![三格分镜图示例](examples/storyboard-images/page-01.png)
+把分镜图按镜号拆成单镜画面，配合原曲按时间播放。可以先检查换镜、停顿和高潮，再调整切点、镜序或需要补做的画面。采用的镜头时间表随生成工作包交接。详见 [静止帧试剪规范](mv-script/references/still-frame-edit.md)。
 
 ## 依赖与能力边界
 
@@ -130,14 +136,14 @@ python3 install_skill.py --host claude
 
 ```sh
 python3 mv-script/scripts/inspect_media.py --check-tools
-python3 mv-script/scripts/inspect_media.py song.wav reference.mp4 --output mv_project/media_inspection
+python3 mv-script/scripts/inspect_media.py song.wav reference.mp4 --output mv_project/demo/media_inspection
 ```
 
 辅助脚本只做元数据与有限抽帧，不自动识别音乐段落、估计 BPM、转录歌词或检测切镜。少量静帧不足以确定完整剪辑节奏或运镜。判断节奏时需要连续画面、经核验的切点或明确归于用户的标注。详见 [参考映射规范](mv-script/references/reference-structure-rhythm.md) 与 [本地工具说明](mv-script/references/local-tools.md)。
 
-## 示例与验证
+## 《催眠》案例与验证
 
-[原创测试歌词](examples/lyrics.txt)、[完整剧本](examples/screenplay.md)、[导演分镜](examples/storyboard.md) 和 [局部修订稿](examples/screenplay-revision.md) 展示同一方向如何逐步展开。这些是验收示例，不代表对真实歌曲完成了时间对齐。
+《催眠》短版根据参考片结构重新安排 8 段、34 镜。案例从红厅对视转入夜车的段落切点，讲到全曲静帧试剪，再用绿隧道 S07.02 展示如何分配身份图、动作姿态图、参考视频和裁切后的音频。 [《催眠》短版案例](mv-script/references/cuimian-case.md)
 
 运行检查：
 
@@ -147,7 +153,7 @@ python3 validation/check_package.py
 python3 validation/test_inspect_media.py
 ```
 
-已在本地使用合成音视频完成 12 项媒体测试，并验证格式、引用、备份安装和原素材保护。真实歌曲、真实参考 MV 的语义分析与 Claude Code 实际调用仍待验证。GitHub Actions 使用相同检查，结果以仓库运行记录为准。详见 [验证说明](docs/validation.md)。
+已在本地使用合成音视频完成 12 项媒体测试，并验证格式、引用、备份安装和原素材保护。《催眠》案例另行记录实际试剪和工作包的检查范围。 [验证说明](docs/validation.md)
 
 ## 目录
 

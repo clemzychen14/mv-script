@@ -1,6 +1,6 @@
 # MV Script
 
-An Agent Skill for developing original music video concepts, complete scene scripts, character sheets, scene backgrounds, shot tables, and storyboard images from songs, lyrics, reference videos, and character images.
+An Agent Skill for developing original music videos from songs, lyrics, and visual references. The workflow covers concepts, scripts, visual assets, storyboards, timed still-frame previews, and prompt packages for production.
 
 [中文说明](README.md) · [Skill](mv-script/SKILL.md) · [Validation](docs/validation.md) · [MIT](LICENSE)
 
@@ -10,7 +10,7 @@ Start with any available input. The default workflow examines accessible sources
 
 When a reference video is provided, its section structure, editing pace, action beats, pauses, and climax organization guide the new work. These relationships are mapped to the target song, with timing changes explained. Original stories can share the reference structure while differing in character choices or conceptual mechanisms.
 
-Deliverables include editable text and optional generated character sheets, scene backgrounds, and storyboard images. Image generation uses the host's available built-in tool without a separately configured API key; it is not guaranteed to run offline. The skill does not generate music or final videos, or submit video generation jobs.
+In the full workflow, the script establishes the visual assets before storyboarding. The storyboard frames are then edited against the song to check timing. The adopted timing informs the per-clip prompts, settings, and references in the production handoff package.
 
 ## Install
 
@@ -42,9 +42,11 @@ Continue with a selected direction, request a complete scene script, or ask for 
 
 The workflow adapts to the input. Lyrics alone support concepts and an ordered script; readable images support visible character or scene descriptions. Missing audio evidence is marked as unknown rather than replaced with invented BPM, song sections, or lyric timestamps. Shot counts and durations are not fixed to a grid or a 15 second segment rule.
 
-## Character sheets and scene backgrounds
+Each new MV defaults to its own folder under `mv_project/`. When asked to organize existing projects, the skill maps files to their projects, moves them into sibling folders, verifies affected references, and updates the project index. [Project organization](mv-script/references/project-organization.md)
 
-A polished character sheet is not required at the start. A clear photograph, illustration, partial view, or several detail references can be used, and materials can arrive gradually. Request only the assets needed for the current task. Existing usable images can be referenced directly.
+## Visual assets
+
+You can start with a clear photograph, an illustration, or partial views and add materials as you go. Once the script is settled, identify the three-view character sheets, separate face close-ups, key props, and scene images the shots will need. Adopt usable references and create the missing images required by the script.
 
 ```text
 Create a front, side, and back character sheet from this reference. Preserve the visible face design, hair, outfit, colors, and accessories. Identify unseen details as creative additions.
@@ -56,7 +58,7 @@ Use the selected character sheet and background as image references for the stor
 
 Character sheets preserve visible anchors while treating unseen views as proposed design, not recovered facts. Background requests can retain the original setting, develop a new one from its style, or create requested camera and lighting variants. Generated files, reference roles, selected versions, and creative additions are recorded under `assets/characters/`, `assets/scenes/`, and `assets/index.md`. Later storyboard calls pass the actual selected images to the image tool.
 
-The workflow does not require every missing asset to be generated before concepts or scripts can proceed. See the [visual asset workflow](mv-script/references/visual-assets.md). The [tested examples](examples/visual-assets/index.md) include a three-view sheet generated from one synthetic front image and an unoccupied background generated from the original storyboard. They record visible anchors, creative completions, and inspection limits.
+In 《催眠》, the three-view sheet guides body proportions and wardrobe. The supplied face photo anchors identity, and the scene references guide layout and lighting. [Visual asset workflow](mv-script/references/visual-assets.md)
 
 ## Storyboard images
 
@@ -68,9 +70,9 @@ Generate storyboard images from this shot table. Keep the character and scene de
 
 The workflow calls an available image tool, inspects the results, and saves real image files under the project's `storyboard_images/` directory. It does not stop at prompts or placeholder cards. A full set is completed when requested, while preview requests stay limited to the requested scope. If no image tool is available, that limitation is reported. See the [image workflow](mv-script/references/storyboard-images.md). Only necessary text and image references are supplied to the image tool; full audio or video files are not additionally uploaded.
 
-The following three-panel test page was actually generated and visually inspected from the original example, covering S01.01, S02.01, and S05.01. It is not aligned to a real song. See the [image index](examples/storyboard-images/index.md) for inspection limits and the saved prompt.
+## Still-frame edit
 
-![Generated three-panel storyboard example](examples/storyboard-images/page-01.png)
+Place individual storyboard frames on a timeline with the target song. Use the playable preview to review shot lengths, cuts, pauses, and the climax. Record adopted changes in the shot timeline for the prompt and handoff stages. See the [still-frame editing workflow](mv-script/references/still-frame-edit.md).
 
 ## Optional local tools
 
@@ -78,16 +80,16 @@ The writing workflow needs no media utilities. The optional helper uses Python 3
 
 ```sh
 python3 mv-script/scripts/inspect_media.py --check-tools
-python3 mv-script/scripts/inspect_media.py song.wav reference.mp4 --output mv_project/media_inspection
+python3 mv-script/scripts/inspect_media.py song.wav reference.mp4 --output mv_project/demo/media_inspection
 ```
 
 The helper reads metadata and extracts bounded sparse frames. It does not understand audio or images, estimate BPM, identify song sections, transcribe lyrics, or detect cuts. Temporal claims require continuous evidence, verified cuts, or clearly attributed user annotations. Sparse frames alone do not establish editing rhythm or camera movement.
 
 File count, frame count, output size, and subprocess timeouts are bounded. URLs and nonempty output directories are rejected. Source files are not overwritten or deleted. See the [tool reference](mv-script/references/local-tools.md).
 
-## Examples and validation
+## 《催眠》 case study and validation
 
-[Original test lyrics](examples/lyrics.txt), a [scene script](examples/screenplay.md), a [storyboard](examples/storyboard.md), and a [limited revision](examples/screenplay-revision.md) illustrate the workflow. They have not been aligned to a real song.
+The short cut of 《催眠》 spans eight sections and 34 shots. The case follows the storyboard and full-song still-frame edit into the production package, with the tunnel shot S07.02 as a worked example of timing and reference inputs. [Case study in Chinese](mv-script/references/cuimian-case.md)
 
 ```sh
 python3 -m pip install -r requirements-dev.txt
@@ -95,6 +97,6 @@ python3 validation/check_package.py
 python3 validation/test_inspect_media.py
 ```
 
-Twelve local media checks have passed using synthetic audio and video. Configuration, relative references, backup installation, and source preservation have also been checked. Real song and reference MV interpretation, precise lyric alignment, and live Claude Code invocation remain untested. GitHub Actions runs the repository checks; its actual results are recorded in the Actions tab.
+Twelve local media checks have passed using synthetic audio and video. Configuration, relative references, backup installation, and source preservation have also been checked. The 《催眠》 case study records the checks performed on its still-frame edit and handoff package. [Validation](docs/validation.md)
 
 The installable skill is the inner `mv-script/` directory. Examples, documentation, and development checks remain outside it. Generated media and local reports containing workstation paths are excluded from version control.
