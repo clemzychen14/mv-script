@@ -12,6 +12,46 @@ When a reference video is provided, its section structure, editing pace, action 
 
 In the full workflow, the script establishes the visual assets before storyboarding. The storyboard frames are then edited against the song to check timing. The adopted timing informs the per-clip prompts, settings, and references in the production handoff package.
 
+## 《催眠》 MV short-cut case study
+
+### Adapting the reference structure
+
+The short cut uses the updated version of 《催眠》 from start to finish at its original speed. Its eight sections follow the reference through a lit arcade, a night drive, a red stage, a moment of levitation and eye contact, a confrontation, a green tunnel, and a city finale. The arcade and driving sequences use fewer shots to leave time for the character to approach the stage and for the full turn and arm extension in the tunnel. Her smile in the opening close-up returns in the finale after the confrontation.
+
+In section 5, from 00:29.00 to 00:55.12, the protagonist rises from her chair and glides toward the stage. The singer reaches out, and the two hold each other's gaze. At 00:48.00, the edit moves from their faces to streaking lights inside the car, then to the driver's smile behind sunglasses and a rush of red and gold lights. That sequence follows the reference at approximately 02:25 to 02:30. The edit returns to the red hall at 00:55.12 as the encounter is interrupted.
+
+### Selecting visual assets
+
+| Asset | Purpose |
+| --- | --- |
+| C01 protagonist | The front, side, and back views guide proportions and red-and-black wardrobe. The supplied front-facing photo anchors her identity, with additional angles for comparison. The character state sheet tracks her sunglasses, collar, and abrasion. |
+| P01 personal items and V01 silver convertible | The item references track sunglasses, gloves, and wardrobe details. The silver exterior and black interior carry through the roadside, driving, and return shots. |
+| E03 red hall and E04 green tunnel | The hall reference establishes the layout of the curtains, tables, chairs, and stage. The tunnel reference establishes the overhead lights, arch depth, and red-orange highlights. |
+
+### Storyboard and still-frame edit
+
+| Shot | Time in the full edit | Action and cut |
+| --- | --- | --- |
+| S05.05 | 00:44.32 to 00:48.00 | Hold on the two characters' gaze in profile before cutting to the lights inside the car. |
+| S05.06 | 00:48.00 to 00:50.44 | Start the return to the night drive with light trails seen from inside the car. |
+| S07.02 | 01:11.52 to 01:20.56 | Give the turn, arm extension, cross-step, and weight shift 9.04 seconds in one medium-wide shot. |
+| S08.03 to S08.04 | 01:33.40 to 01:40.60 | Cut on the same reaching gesture from a close view to a low-angle full-body shot at 01:37.20. |
+
+The storyboard reuses panels where the composition still fits and adds frames for the short cut. Section 5 has two storyboard pages and a 26.12-second still-frame preview. The full-song revision expands the city finale to six shots while keeping the earlier shot order and the original-speed audio. The revised edit has 34 shots and 33 cuts, with 2,705 frames at 25 fps (108.20 seconds) against 108.191625 seconds of audio.
+
+### Preparing the generation handoff
+
+The handoff package contains a shot execution table, per-shot prompts, input order, and the actual reference files. For S07.02, the 9.04-second excerpt from 01:11.52 to 01:20.56 starts at zero in the clip's WAV file.
+
+| Input | Role |
+| --- | --- |
+| Image 1 | The supplied front-facing photo anchors the protagonist's face. |
+| Images 2, 3, and 4 | Show the opening pose, the arm extension and cross-step, and the return to a forward-facing stance. |
+| Video 1 | Provides the shoulder-led turn and arm extension as motion reference. |
+| Audio 1 | Contains the excerpt for this shot at its original speed. |
+
+The Wan3 PE prompt calls for a continuous medium-wide shot with a gentle lateral camera move and room for the hands and feet. The shifted tie, absent sunglasses, and dry abrasion carry through the shot. The still-frame preview, execution table, and input package are complete. Performance, motion continuity, and lip sync remain to be checked on generated footage.
+
 ## Install
 
 ```sh
@@ -58,7 +98,7 @@ Use the selected character sheet and background as image references for the stor
 
 Character sheets preserve visible anchors while treating unseen views as proposed design, not recovered facts. Background requests can retain the original setting, develop a new one from its style, or create requested camera and lighting variants. Generated files, reference roles, selected versions, and creative additions are recorded under `assets/characters/`, `assets/scenes/`, and `assets/index.md`. Later storyboard calls pass the actual selected images to the image tool.
 
-In 《催眠》, the three-view sheet guides body proportions and wardrobe. The supplied face photo anchors identity, and the scene references guide layout and lighting. [Visual asset workflow](mv-script/references/visual-assets.md)
+[Visual asset workflow](mv-script/references/visual-assets.md)
 
 ## Storyboard images
 
@@ -87,9 +127,7 @@ The helper reads metadata and extracts bounded sparse frames. It does not unders
 
 File count, frame count, output size, and subprocess timeouts are bounded. URLs and nonempty output directories are rejected. Source files are not overwritten or deleted. See the [tool reference](mv-script/references/local-tools.md).
 
-## 《催眠》 case study and validation
-
-The short cut of 《催眠》 spans eight sections and 34 shots. The case follows the storyboard and full-song still-frame edit into the production package, with the tunnel shot S07.02 as a worked example of timing and reference inputs. [Case study in Chinese](mv-script/references/cuimian-case.md)
+## Validation
 
 ```sh
 python3 -m pip install -r requirements-dev.txt
@@ -99,4 +137,4 @@ python3 validation/test_inspect_media.py
 
 Twelve local media checks have passed using synthetic audio and video. Configuration, relative references, backup installation, and source preservation have also been checked. The 《催眠》 case study records the checks performed on its still-frame edit and handoff package. [Validation](docs/validation.md)
 
-The installable skill is the inner `mv-script/` directory. Examples, documentation, and development checks remain outside it. Generated media and local reports containing workstation paths are excluded from version control.
+The installable skill is the inner `mv-script/` directory. Repository documentation and development checks remain outside it. Generated media and local reports containing workstation paths are excluded from version control.
